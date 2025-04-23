@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
@@ -12,10 +13,7 @@ const mongoUrl = process.env.MONGO_URI;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-app.get("/", (req, res) => {
-  res.send(`Hello world`);
-});
+app.use(cors());
 
 app.use("/api/employees", employeeRouter);
 
