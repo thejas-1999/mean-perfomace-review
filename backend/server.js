@@ -7,6 +7,7 @@ const app = express();
 const port = process.env.PORT || 8000;
 const mongoUrl = process.env.MONGO_URI;
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send(`Hello world`);
