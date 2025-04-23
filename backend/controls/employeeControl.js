@@ -58,8 +58,10 @@ const loginEmployee = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    // Generate the token and set the cookie
     generateToken(res, employee._id); // Set the cookie
 
+    // Send the response with the employee data
     res.json({
       employee: {
         _id: employee._id,

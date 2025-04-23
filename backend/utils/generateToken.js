@@ -5,12 +5,11 @@ const generateToken = (res, userId) => {
     expiresIn: "30d",
   });
 
-  //setjwt as http-only cookie
   res.cookie("jwt", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
+    secure: process.env.NODE_ENV !== "development", // Set secure to true for production
     sameSite: "strict",
-    maxAge: 30 * 24 * 60 * 60 * 1000, //30 days
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 };
 
