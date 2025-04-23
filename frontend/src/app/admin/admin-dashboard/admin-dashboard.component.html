@@ -1,0 +1,114 @@
+<div>
+  <button routerLink="/admin/adminDashboard">Employees</button>
+  <button routerLink="/admin/reviews">Reviews</button>
+</div>
+
+<div class="main">
+  <div class="employee-details">
+    <h1>Employees</h1>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+
+        <th>Actions</th>
+      </tr>
+      <tr *ngFor="let employee of employees">
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.email }}</td>
+
+        <td>
+          <button class="edit-btn" (click)="editEmployee(employee)">
+            Edit
+          </button>
+          <button class="delete-btn" (click)="deleteEmployee(employee._id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="employee-form">
+  <h1 class="heading">
+    <span *ngIf="!editMode">Add Employee</span>
+    <span *ngIf="editMode">Edit Employee</span>
+  </h1>
+
+  <form [formGroup]="employeeForm" (ngSubmit)="formSubmit()">
+    <!-- Name -->
+    <label for="name">Name</label><span class="required">*</span>
+    <input
+      id="name"
+      type="text"
+      formControlName="name"
+      placeholder="Enter name"
+    />
+    <span
+      *ngIf="
+        employeeForm.controls.name.invalid && employeeForm.controls.name.touched
+      "
+      class="error-message"
+    >
+      <span *ngIf="employeeForm.controls.name.errors?.['required']">
+        Name is required
+      </span>
+      <span *ngIf="employeeForm.controls.name.errors?.['minlength']">
+        Name must be at least 4 characters
+      </span>
+    </span>
+
+    <!-- Email -->
+    <label for="email">Email</label><span class="required">*</span>
+    <input
+      id="email"
+      type="text"
+      formControlName="email"
+      placeholder="Enter email"
+    />
+    <span
+      *ngIf="
+        employeeForm.controls.email.invalid &&
+        employeeForm.controls.email.touched
+      "
+      class="error-message"
+    >
+      <span *ngIf="employeeForm.controls.email.errors?.['required']">
+        Email is required
+      </span>
+      <span *ngIf="employeeForm.controls.email.errors?.['email']">
+        Enter a valid email
+      </span>
+    </span>
+
+    <!-- password -->
+    <label for="password">Password</label><span class="required">*</span>
+    <input
+      id="password"
+      type="password"
+      formControlName="password"
+      placeholder="Enter password"
+    />
+    <span
+      *ngIf="
+        employeeForm.controls.password.invalid &&
+        employeeForm.controls.password.touched
+      "
+      class="error-message"
+    >
+      <span *ngIf="employeeForm.controls.password.errors?.['required']">
+        Password is required
+      </span>
+      <span *ngIf="employeeForm.controls.password.errors?.['minlength']">
+        Password must be at least 4 characters
+      </span>
+    </span>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="employeeForm.invalid">
+      <span *ngIf="!editMode">Add Employee</span>
+      <span *ngIf="editMode">Edit Employee</span>
+    </button>
+  </form>
+</div>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
 import { AuthGuard } from '../auth.guard';
-import { AdminComponent } from './admin/admin.component';
+
 
 const routes: Routes = [
   {
@@ -16,11 +16,7 @@ const routes: Routes = [
     component: EmployeeDashboardComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [AuthGuard]
-  }
+
 ];
 
 @NgModule({

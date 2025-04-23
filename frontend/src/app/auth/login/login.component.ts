@@ -29,7 +29,7 @@ export class LoginComponent {
           console.log(res.employee.role)
 
           if (res.employee.role == 'admin') {
-            this.router.navigate(['employee/admin']);
+            this.router.navigate(['admin/adminDashboard']);
           }
           else {
             this.router.navigate(['employee/employeeDashboard']);
