@@ -7,6 +7,7 @@ import cors from "cors";
 dotenv.config();
 const app = express();
 import employeeRouter from "./routes/employeeRoutes.js";
+import reviewRouter from "./routes/reviewRoutes.js";
 
 const port = process.env.PORT || 8000;
 const mongoUrl = process.env.MONGO_URI;
@@ -21,6 +22,7 @@ app.use(
 );
 
 app.use("/api/employees", employeeRouter);
+app.use("/api/reviews", reviewRouter);
 
 mongoose.connect(mongoUrl).then(() => {
   console.log(`server is connected to mongodb`);

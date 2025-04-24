@@ -32,12 +32,6 @@ export class AdminService {
     return this.http.delete(`${this.deleteEmployeeApi}/${employeeId}`)
   }
 
-  /*   addFeedback(id: string, updatedData: any) {
-      return this.http.put(`${this.addFeedbackApi}/${id}`, updatedData)
-    }
-  
-    getFeedbacks(id: string) {
-      return this.http.get<any[]>(`${this.getFeedbackApi}/${id}`)
-    } */
+
 
 }

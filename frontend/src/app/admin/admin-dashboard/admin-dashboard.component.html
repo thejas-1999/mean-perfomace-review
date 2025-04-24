@@ -4,6 +4,7 @@
   <div class="admin-header">
     <button routerLink="/admin/adminDashboard">Employees</button>
     <button routerLink="/admin/reviews">Reviews</button>
+    <button class="log-out" (click)="logout()">Log out</button>
   </div>
 
   <!-- Main content wrapper -->
@@ -121,12 +122,17 @@
               <td>{{ employee.name }}</td>
               <td>{{ employee.email }}</td>
               <td>
-                <button class="edit-btn" (click)="editEmployee(employee)">
+                <button
+                  class="edit-btn"
+                  (click)="editEmployee(employee)"
+                  [disabled]="employee.role === 'admin'"
+                >
                   Edit
                 </button>
                 <button
                   class="delete-btn"
                   (click)="deleteEmployee(employee._id)"
+                  [disabled]="employee.role === 'admin'"
                 >
                   Delete
                 </button>

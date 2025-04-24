@@ -1,6 +1,104 @@
-<div>
-  <button routerLink="/admin/adminDashboard">Employees</button>
-  <button routerLink="/admin/reviews">Reviews</button>
-</div>
+<div class="admin-container">
+  <nav class="admin-nav">
+    <button class="nav-btn" routerLink="/admin/adminDashboard">
+      Employees
+    </button>
+    <button class="nav-btn" routerLink="/admin/reviews">Reviews</button>
+    <button class="nav-btn" (click)="logout()">Log out</button>
+  </nav>
 
-<p>review works!</p>
+  <div class="review-form">
+    <h2>{{ editMode ? "Edit Review" : "Add New Review" }}</h2>
+
+    <form [formGroup]="reviewForm" (ngSubmit)="formSubmit()">
+      <label>Reviewee:</label>
+      <select formControlName="reviewee">
+        <option value="">Select</option>
+        <option *ngFor="let emp of employees" [value]="emp._id">
+          {{ emp.name }}
+        </option>
+      </select>
+
+      <br /><br />
+
+      <label>Assigned Reviewers:</label>
+      <div *ngFor="let emp of employees">
+        <ng-container *ngIf="emp._id !== reviewForm.get('reviewee')?.value">
+          <input
+            type="checkbox"
+            [value]="emp._id"
+            (change)="onReviewerChange(emp._id, $event)"
+            [checked]="isReviewerChecked(emp._id)"
+          />
+          <label>{{ emp.name }}</label>
+        </ng-container>
+      </div>
+
+      <br /><br />
+
+      <br /><br />
+
+      <label>Due Date:</label>
+      <input type="date" formControlName="dueDate" />
+
+      <br /><br />
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="review-list">
+    <header class="section-header">
+      <h1 class="section-title">Reviews</h1>
+    </header>
+
+    <!-- Review Cards -->
+    <section class="review-cards">
+      <article *ngFor="let review of reviews" class="review-card">
+        <!-- Reviewee Information -->
+        <header class="review-header">
+          <h3 class="reviewee-name">Reviewee: {{ review.reviewee.name }}</h3>
+          <p
+            class="due-date"
+            [ngStyle]="{ color: isPastDue(review.dueDate) ? 'red' : 'black' }"
+          >
+            Due Date: {{ review.dueDate | date }}
+            <span *ngIf="isPastDue(review.dueDate)"> - ⚠️ Past Due</span>
+          </p>
+        </header>
+
+        <!-- Assigned Reviewers -->
+        <section class="reviewer-section">
+          <h5 class="section-subtitle">Assigned Reviewers</h5>
+          <ul class="reviewer-list">
+            <li
+              *ngFor="let reviewer of review.assignedReviewers"
+              class="reviewer-item"
+            >
+              {{ reviewer.name }}
+            </li>
+          </ul>
+        </section>
+
+        <!-- Feedback Collection -->
+        <section class="feedback-section">
+          <h3 class="section-subtitle">Feedbacks</h3>
+          <div *ngFor="let feedback of review.feedback" class="feedback-item">
+            <h4 class="reviewer-name">
+              Reviewer Name: {{ feedback.reviewer?.name }}
+            </h4>
+            <p class="feedback-text">
+              Feedback: {{ feedback.comments || "No comments yet" }}
+            </p>
+          </div>
+        </section>
+        <div class="action">
+          <button type="button" (click)="editReview(review)">Edit</button>
+          <button type="button" (click)="deleteReview(review._id)">
+            Delete
+          </button>
+        </div>
+      </article>
+    </section>
+  </div>
+</div>

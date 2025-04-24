@@ -2,6 +2,7 @@ import Employee from "../models/employeeModel.js";
 import bcrypt from "bcryptjs";
 
 import generateToken from "../utils/generateToken.js";
+import Review from "../models/reviewModel.js";
 
 //get all employees
 const getAllEmployees = async (req, res) => {
@@ -110,14 +111,28 @@ const updateEmployee = async (req, res) => {
 const deleteEmployee = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
-
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });
     }
 
+    // 1. Delete reviews where the employee is the reviewee
+    await Review.deleteMany({ reviewee: employee._id });
+
+    // 2. Remove employee from assigned reviewers and their feedback entries
+    await Review.updateMany(
+      { assignedReviewers: employee._id },
+      {
+        $pull: {
+          assignedReviewers: employee._id,
+          feedback: { reviewer: employee._id },
+        },
+      }
+    );
+
+    // 3. Delete the employee
     await employee.deleteOne();
 
-    res.json({ message: "Employee deleted successfully" });
+    res.json({ message: "Employee and related data deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

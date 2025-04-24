@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { AdminService } from '../../admin.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,7 +17,7 @@ export class AdminDashboardComponent {
   editMode: boolean = false
   selectedEmployeeId: string | null = null;
 
-  constructor(private adminService: AdminService) {
+  constructor(private adminService: AdminService, private router: Router) {
     this.getEmployeeDetails()
   }
 
@@ -32,7 +34,7 @@ export class AdminDashboardComponent {
   getEmployeeDetails() {
     this.adminService.fetchEmployees().subscribe((result) => {
       this.employees = result
-      console.log(this.employees)
+
     })
 
   }
@@ -43,7 +45,7 @@ export class AdminDashboardComponent {
 
       if (this.editMode && this.selectedEmployeeId) {
         this.adminService.editEmployee(this.selectedEmployeeId, employee).subscribe((result) => {
-          console.log('employee updated successfully');
+          window.alert('Employee updated Successfully')
 
           this.getEmployeeDetails();
 
@@ -54,7 +56,7 @@ export class AdminDashboardComponent {
         });
       } else {
         this.adminService.addEmployees(employee).subscribe((result) => {
-          console.log('Doctor inserted successfully');
+          window.alert('Employee Created Succesfully')
           this.getEmployeeDetails();
           this.employeeForm.reset();
         });
@@ -64,20 +66,38 @@ export class AdminDashboardComponent {
 
 
   editEmployee(employee: any) {
+    if (employee.role === 'admin') {
+      alert('Admin user cannot be edited.');
+      return;
+    }
+
     this.editMode = true;
     this.selectedEmployeeId = employee._id;
     this.employeeForm.patchValue({
       name: employee.name,
       email: employee.email,
-
     });
   }
 
+
   deleteEmployee(employeeId: any) {
-    this.adminService.deleteEmployee(employeeId).subscribe((result) => {
-      console.log(`Deleted Successfully`)
-      this.getEmployeeDetails()
-    })
+    const confirmDelete = window.confirm('Are you sure you want to delete this employee?');
+    if (confirmDelete) {
+      this.adminService.deleteEmployee(employeeId).subscribe((result) => {
+        window.alert('Employee Deleted Successfully')
+        this.getEmployeeDetails();
+      });
+    }
+  }
+
+  logout() {
+    const confirmDelete = window.confirm('Are you sure you want to Log out?');
+    if (confirmDelete) {
+      localStorage.removeItem("isLoggedIn");
+      this.router.navigate(['login']);
+    }
 
   }
+
+
 }

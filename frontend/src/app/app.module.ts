@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { DueDateFormatPipe } from './due-date-format.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DueDateFormatPipe
   ],
   imports: [
     BrowserModule,

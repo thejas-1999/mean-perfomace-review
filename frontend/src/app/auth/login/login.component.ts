@@ -24,9 +24,9 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.employeeService.loginEmployee(employee).subscribe({
         next: (res: any) => {
-          console.log(res.employee.role);
+
           localStorage.setItem('isLoggedIn', 'true');
-          console.log(res.employee.role)
+
 
           if (res.employee.role == 'admin') {
             this.router.navigate(['admin/adminDashboard']);
