@@ -1,7 +1,6 @@
 import Employee from "../models/employeeModel.js";
 import bcrypt from "bcryptjs";
 
-import generateToken from "../utils/generateToken.js";
 import Review from "../models/reviewModel.js";
 
 //get all employees
@@ -58,9 +57,6 @@ const loginEmployee = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-
-    // Generate the token and set the cookie
-    generateToken(res, employee._id); // Set the cookie
 
     // Send the response with the employee data
     res.json({

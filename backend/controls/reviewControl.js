@@ -130,7 +130,7 @@ const deleteReview = async (req, res) => {
 // Employee Controller: Get Assigned Reviews
 const getAssignedReviews = async (req, res) => {
   try {
-    const employeeId = req.params.id; // Assuming user info is stored in `req.user`
+    const employeeId = req.params.id;
 
     // Find reviews where the employee is listed as an assigned reviewer
     const reviews = await Review.find({

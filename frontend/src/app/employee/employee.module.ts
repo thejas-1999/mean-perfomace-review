@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashboard.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -13,7 +14,8 @@ import { EmployeeDashboardComponent } from './employee-dashboard/employee-dashbo
   ],
   imports: [
     CommonModule,
-    EmployeeRoutingModule
+    EmployeeRoutingModule,
+    FormsModule
   ]
 })
 export class EmployeeModule { }

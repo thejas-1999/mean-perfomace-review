@@ -26,6 +26,10 @@ export class LoginComponent {
         next: (res: any) => {
 
           localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('user', JSON.stringify(res.employee));
+
+
+
 
 
           if (res.employee.role == 'admin') {
@@ -40,8 +44,12 @@ export class LoginComponent {
 
         },
         error: (err) => {
+          window.alert('Invalid Credentials')
           console.error("Login failed", err);
+          console.error("Full error message:", JSON.stringify(err, null, 2));
+          this.loginForm.reset()
         }
+
       });
     } else {
       this.loginForm.markAllAsTouched();

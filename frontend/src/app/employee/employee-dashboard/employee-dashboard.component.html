@@ -1,1 +1,48 @@
-<p>employee-dashboard works!</p>
+<div class="container">
+  <!-- Navigation Bar: Ensure it's outside the conditional rendering -->
+  <nav class="navbar">
+    <button class="navbar-button" (click)="setSection('assigned')">
+      Assigned Feedback
+    </button>
+    <button class="navbar-button" (click)="setSection('submitted')">
+      Submitted Feedback
+    </button>
+    <button class="navbar-button logout" (click)="logout()">Logout</button>
+  </nav>
+
+  <!-- Assigned Feedback Section -->
+  <div *ngIf="activeSection === 'assigned'" class="feedback-section">
+    <h2>Feedbacks</h2>
+    <div *ngIf="feedbacks.length === 0" class="empty-state">
+      No pending feedbacks
+    </div>
+    <div *ngFor="let review of feedbacks" class="review-card">
+      <h4>{{ review.reviewee.name }}</h4>
+      <button class="review-button" (click)="addReview(review._id)">
+        Add Review
+      </button>
+
+      <div *ngIf="activeReviewId === review._id" class="review-form">
+        <textarea
+          [(ngModel)]="comments"
+          placeholder="Enter your feedback..."
+        ></textarea>
+        <button class="submit-button" (click)="submitReview(review._id)">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submitted Feedback Section -->
+  <div *ngIf="activeSection === 'submitted'" class="feedback-section">
+    <h2>Submitted Feedbacks</h2>
+    <div *ngIf="submittedFeedbacks.length === 0" class="empty-state">
+      No feedback submitted yet
+    </div>
+    <div *ngFor="let review of submittedFeedbacks" class="review-card">
+      <h4>{{ review.reviewee.name }}</h4>
+      <p><strong>Your Feedback:</strong> {{ review.myFeedback.comments }}</p>
+    </div>
+  </div>
+</div>
