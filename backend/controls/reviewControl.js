@@ -180,40 +180,10 @@ const submitFeedback = async (req, res) => {
   }
 };
 
-// Employee Controller: Get Feedback Status
-const getFeedbackStatus = async (req, res) => {
-  try {
-    const employeeId = req.user.id; // Assuming user info is stored in `req.user`
-
-    // Find all reviews assigned to the employee
-    const reviews = await Review.find({
-      assignedReviewers: employeeId,
-    });
-
-    // Format the response to show the status of each feedback
-    const feedbackStatuses = reviews.map((review) => {
-      const feedback = review.feedback.find(
-        (feedback) => feedback.reviewer.toString() === employeeId
-      );
-
-      return {
-        reviewId: review._id,
-        reviewee: review.reviewee,
-        feedbackStatus: feedback ? feedback.status : "Not Assigned",
-      };
-    });
-
-    res.status(200).json(feedbackStatuses);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching feedback status", error });
-  }
-};
-
 export {
   createReview,
   getAssignedReviews,
   submitFeedback,
-  getFeedbackStatus,
   getAllReviews,
   updateReview,
   deleteReview,
