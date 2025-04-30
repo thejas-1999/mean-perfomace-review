@@ -21,8 +21,16 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, "../frontend/dist/frontend")));
+
 app.use("/api/employees", employeeRouter);
 app.use("/api/reviews", reviewRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "../frontend/dist/frontend/browser/index.html")
+  );
+});
 
 mongoose.connect(mongoUrl).then(() => {
   console.log(`server is connected to mongodb`);
